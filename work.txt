@@ -1,0 +1,3 @@
+Look at objstore config - done
+
+Add in helm_release terraform - pending 

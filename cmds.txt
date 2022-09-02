@@ -1,0 +1,33 @@
+helm install -f values.yaml thanos charts/thanos-11.1.3.tgz
+
+
+To access Thanos Query from outside the cluster execute the following commands:
+
+1. Get the Thanos Query URL by running these commands:
+
+export SERVICE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].port}" services thanos-query)
+kubectl port-forward --namespace default svc/thanos-query ${SERVICE_PORT}:${SERVICE_PORT} &
+echo "http://127.0.0.1:${SERVICE_PORT}"
+
+Replace i.e thanos-query with own service name
+
+export SERVICE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].port}" services mythanos-query)
+kubectl port-forward --namespace default svc/mythanos-query ${SERVICE_PORT}:${SERVICE_PORT} &
+echo "http://127.0.0.1:${SERVICE_PORT}"
+
+Helm install from helm2 dir/
+
+helm install -f thanos/values.yaml mythanos thanos/charts/thanos-11.1.3.tgz
+
+helm upgrade -f thanos/values.yaml mythanos thanos/charts/thanos-11.1.3.tgz
+
+Vault login and Auth
+
+For now..
+
+cmd
+vault login
+
+use root token
+
+run terraform apply
