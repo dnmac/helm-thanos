@@ -55,3 +55,14 @@ variable "vault_address" {
   type = string
   default = "http://127.0.0.1:8200"
 }
+
+variable "commonAnnotations" {
+  type = map(string)
+
+  default = {
+    "anotribe" = "dan"
+    "anodomain" = "my_ano_domain"
+    "anosquad" = "dan_squad_ano"
+  }
+  
+}

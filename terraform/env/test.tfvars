@@ -21,3 +21,9 @@ tags = {
 }
 
 vault_address = "http://127.0.0.1:8200/"
+
+commonAnnotations = {
+    "anotribe" = "dan"
+    "anodomain" = "my_ano_domain"
+    "anosquad" = "dan_squad_ano"
+  }

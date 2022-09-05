@@ -25,20 +25,42 @@ resource "helm_release" "mythanos" {
   version   = "11.1.3"
   dependency_update = true
   lint = true
+  cleanup_on_fail = true
+  timeout = 1000
 
   values = [
     "${file(var.thanos_values_file)}"
   ]
 
   set {
-    name  = "extraEnvVars[0].AWS_ACCESS_KEY"
-    value = "JAVA_OPTS"
+    name  = "thanos.query.replicaCount"
+    value = 1
   }
 
   set {
-    name  = "extraEnvVars[0].AWS_SECRET_KEY"
-    value = " second one"
+    name  = "thanos.queryFrontend.replicaCount"
+    value = 1
   }
+
+  # set {
+  #   name  = "thanos.query.extraEnvVars[0].name"
+  #   value = "AWS_ACCESS_KEY"
+  # }
+
+  # set {
+  #   name  = "thanos.query.extraEnvVars[0].value"
+  #   value = data.vault_generic_secret.aws_credentials.data["aws_access_key"]
+  # }
+
+  # set {
+  #   name  = "thanos.query.extraEnvVars[1].name"
+  #   value = "AWS_SECRET_KEY"
+  # }
+
+  # set {
+  #   name  = "thanos.query.extraEnvVars[1].value"
+  #   value = data.vault_generic_secret.aws_credentials.data["aws_secret_key"]
+  # }
 
   depends_on = [
     kubernetes_secret.thanos-auth

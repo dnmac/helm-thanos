@@ -1,3 +1,5 @@
 Look at objstore config - done
 
 Add in helm_release terraform - pending 
+
+1) decode secret inside query/queryfrontend pods

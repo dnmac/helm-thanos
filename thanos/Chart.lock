@@ -2,5 +2,11 @@ dependencies:
 - name: thanos
   repository: https://charts.bitnami.com/bitnami
   version: 11.1.3
-digest: sha256:e1dfdfa5b981d20c1a484e1877d7657a2ca5f6e457d0d8dd323886da456d7ebb
-generated: "2022-08-04T11:01:57.7856582+01:00"
+- name: kube-prometheus
+  repository: https://charts.bitnami.com/bitnami
+  version: 8.1.5
+- name: minio
+  repository: https://charts.bitnami.com/bitnami
+  version: 11.9.4
+digest: sha256:2fbe53103ec08b242f7d69096ad3e23250048b8d96861f27751ef8b38c02c3bc
+generated: "2022-09-05T11:16:27.8018621+01:00"

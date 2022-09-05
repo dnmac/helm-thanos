@@ -1,0 +1,155 @@
+# Default values for thanos.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  imageRegistry: "docker.io"
+
+# image:
+#   registry: "docker.io"
+#   repository: "bitnami/thanos"
+#   tag: "0.27.0-scratch-r6"
+
+
+commonLabels: {tribe: "dan", doman: "my_domain"}
+
+
+prometheus:
+  thanos:
+    create: true
+
+thanos:
+  query:
+    extraEnvVarsSecret: thanos-auth
+    podAnnotations: {anotribe: "dan", anodomain: "my_domain", anosquad: "dan_squad"}
+    podLabels: {tribe: "dan", doman: "my_domain"}
+    dnsDiscovery:
+      enabled: true
+      sidecarsService: mythanos-kube-prometheus-prometheus
+      sidecarsNamespace: default
+objstoreConfig: |-
+  type: s3
+  config:
+    bucket: thanos
+    endpoint: {{ include "thanos.minio.fullname" . }}.monitoring.svc.cluster.local:9000
+    access_key: minio
+    secret_key: minio123
+    insecure: true
+bucketweb:
+  enabled: true
+compactor:
+  enabled: true
+storegateway:
+  enabled: true
+ruler:
+  enabled: true
+  alertmanagers:
+    - http://kube-prometheus-alertmanager.monitoring.svc.cluster.local:9093
+  config: |-
+    groups:
+      - name: "metamonitoring"
+        rules:
+          - alert: "PrometheusDown"
+            expr: absent(up{prometheus="monitoring/kube-prometheus"})
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+minio:
+  enabled: true
+  auth:
+    rootUser: "admin"
+    rootPassword: "minio123"
+  defaultBuckets: "thanos"
+
+
+
+
+
+# thanos:
+
+#   commonLabels: {tribe: "dan", doman: "my_domain_label"}
+
+#   query:
+#     replicaCount: 1
+#     extraEnvVarsSecret: thanos-auth
+#     podAnnotations: {anotribe: "dan", anodomain: "my_domain", anosquad: "dan_squad"}
+#   dnsDiscovery:
+#     sidecarsService: prometheus-operator-prometheus-thanos
+#     sidecarsNamespace: default
+
+#   queryFrontend:
+#     replicaCount: 1
+#     extraEnvVarsSecret: thanos-auth
+
+#   bucketweb:
+#     enabled: true
+#     refresh: "10m"
+
+#   compactor:
+#     enabled: true
+#     persistence:
+#       size: "10Gi"
+#       existingClaim: ""
+
+#   storegateway:
+#     enabled: true
+#     persistence:
+#       size: "10Gi"
+#       existingClaim: ""
+
+#   ruler:
+#     enabled: true
+#     alertmanagers:
+#       - http://prometheus-operator-alertmanager.monitoring.svc.cluster.local:9093
+#     config: |-
+#       groups:
+#         - name: "metamonitoring"
+#           rules:
+#             - alert: "PrometheusDown"
+#               expr: absent(up{prometheus="monitoring/prometheus-operator"})
+
+#   receive:
+#     enabled: false
+
+#   metrics:
+#     enabled: true
+#     serviceMonitor:
+#       enabled: true
+
+#   stores:
+#     - 10.105.135.219:10901
+
+#   objstoreConfig: |-
+#     type: s3
+#     config:
+#       bucket: thanos
+#       endpoint: {{ include "minio.fullname" . }}.monitoring.svc.cluster.local:9000
+#       access_key: minio
+#       secret_key: KEY
+#       insecure: true
+
+  # objstoreConfig: |-
+  #   type: S3
+  #   config:
+  #     bucket: "thanos-test-bucket"
+  #     endpoint: "s3.eu-west-2.amazonaws.com"
+  #     region: "eu-west-2"
+  #     aws_sdk_auth: false
+  #     access_key: 
+  #     insecure: false
+  #     signature_version2: false
+  #     secret_key: 
+  #     http_config:
+  #       idle_conn_timeout: 90s
+  #       response_header_timeout: 2m
+  #       insecure_skip_verify: true
+
+
+
+# bucketweb:
+#   enabled: true
+# compactor:
+#   enabled: true
+# storegateway:
+#   enabled: true
